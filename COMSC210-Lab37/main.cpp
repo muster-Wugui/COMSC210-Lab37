@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 int sum_ascii(string st);
@@ -21,13 +22,19 @@ int main() {
     cout << b << endl;
     cout << (char) b << endl;
     
-    string test;
-    cout << "Enter a string: ";
-    cin >> test;
+    ifstream infile("lab-37-data.txt");
     
-    cout << "The sum of ASCII values: " << sum_ascii(test) << endl; //Print out the sum
+    string text;
+    long long sum = 0;
     
+    while (getline(infile, text)){
+        sum += sum_ascii(text);
+    }
+    
+    cout<<"The sum of the ASCII values of all the codes in the file is: "<<sum;
 
+    infile.close();
+    
     return 0;
 }
 
@@ -37,6 +44,7 @@ int sum_ascii(string st){
     for (int i = 0; i < st.length(); i++) {
            sum += (int)st[i]; // This is the step to cast each character to its ASCII value and add to sum
        }
+    
     
     return sum;
 }
