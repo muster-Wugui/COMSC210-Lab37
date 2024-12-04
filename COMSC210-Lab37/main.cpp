@@ -10,9 +10,11 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <map>
+#include <list>
 using namespace std;
 
-int sum_ascii(string st);
+int gen_hash_index(string st);
 
 int main() {
     char a = 'A';
@@ -22,31 +24,46 @@ int main() {
     cout << b << endl;
     cout << (char) b << endl;
     
+    map<int, list<string>> hashtable;
+    
     ifstream infile("lab-37-data.txt");
     
     string text;
-    long long sum = 0;
-    
+        
     while (getline(infile, text)){
-        sum += sum_ascii(text);
+        int index = gen_hash_index(text);
+        hashtable[index].push_back(text);
     }
     
-    cout<<"The sum of the ASCII values of all the codes in the file is: "<<sum;
-
     infile.close();
+    
+    cout << "The first 100 map entries in the hash table:" << endl;
+    int num = 0;
+    for (const auto& entry : hashtable) {
+        if (num >= 100){
+            return 1;
+        }
+        cout << "Hash Index " << entry.first << ": ";
+        for (const auto& code : entry.second) {
+            cout << code << "\t";
+        }
+        cout << endl;
+        num++;
+        }
     
     return 0;
 }
 
-int sum_ascii(string st){
+int gen_hash_index(string st){
     int sum = 0;
     
     for (int i = 0; i < st.length(); i++) {
            sum += (int)st[i]; // This is the step to cast each character to its ASCII value and add to sum
        }
+     
+    int hash = sum % 100;
     
-    
-    return sum;
+    return hash;
 }
 
 /*
